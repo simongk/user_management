@@ -1,0 +1,115 @@
+<html>
+<head>
+    <title>User Management App</title>
+    <link rel="stylesheet" href="../static/bootstrap.min.css"
+          th:href="@{/bootstrap.min.css}"/>
+    <script type="text/javascript" src="../static/angular.min.js"
+            th:src="@{/angular.min.js}"></script>
+    <script type="text/javascript" src="../static/app/app.module.js"
+            th:src="@{/app/app.module.js}"></script>
+    <script type="text/javascript" src="../static/app/user.controller.js"
+            th:src="@{/app/user.controller.js}"></script>
+    <script type="text/javascript" src="../static/app/groups.controller.js"
+            th:src="@{/app/groups.controller.js}"></script>
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+</head>
+
+<body ng-app="app">
+
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd">
+
+            <div class="navbar-header">
+            <a class="navbar-brand" href="#">User Management</a>
+            </div>
+        <div class="nav navbar-nav">
+                <a class="nav navbar-nav nav-item nav-link" href="#">Users</a>
+                <a class="nav navbar-nav nav-item nav-link" href="#">User Groups</a>
+            </div>
+
+    </nav>
+<div ng-controller="UsersController as vm">
+    <table class="table table-inverse">
+        <thead>
+            <tr>
+            <th>#</th>
+            <th>Login</th>
+            <th>Password</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date Of Birth</th>
+            <th></th>
+            <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="user in vm.users">
+                <th scope="row">{{user.id}}</th>
+                <td>{{user.login}}</td>
+                <td>{{user.password}}</td>
+                <td>{{user.firstName}}</td>
+                <td>{{user.lastName}}</td>
+                <td>{{user.dateOfBirth}}</td>
+                <td>
+                    <button class="btn btn-danger"
+                            ng-click="vm.deleteUser(user.id)">Delete</button>
+                </td>
+                <td>
+                    <button class="btn btn-warning"
+                            ng-click="vm.edit(user.id)">Edit</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <form ng-submit="vm.submit()" name="userForm">
+        Login: <input type="text" ng-model="vm.user.login"/> <br />
+        Password:<input type="text" ng-model="vm.user.password"/> <br />
+        First Name:<input type="text" ng-model="vm.user.firstName"/> <br />
+        Last Name:<input type="text" ng-model="vm.user.lastName"/> <br />
+        Date Of Birth:<input type="text" ng-model="vm.user.dateOfBirth"/> <br />
+        <input type="submit" value="{{!vm.user.id ? 'Add' : 'Update'}}"/>
+    </form>
+</div>
+
+
+    <div ng-controller="GroupsController as gm">
+        <table class="table table-inverse">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Users</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="group in gm.groups">
+                <th scope="row">{{group.id}}</th>
+                <td>{{group.name}}</td>
+                <td>
+                <td ng-repeat="user in group.users">{{user.firstName}} {{user.id}}</td>
+                </td>
+                <td>
+                    <button class="btn btn-danger"
+                            ng-click="gm.deleteGroup(group.id)">Delete</button>
+                </td>
+                <td>
+                    <button class="btn btn-warning"
+                            ng-click="gm.editGroup(group.id)">Edit</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <form ng-submit="gm.submit()" name="groupForm">
+            Name: <input type="text" ng-model="gm.group.name"/> <br />
+            Select users: <select ng-model="gm.group.users" multiple="true" ng-options="u.firstName for u in gm.users">
+                        </select>
+            <input type="submit" value="{{!gm.group.id ? 'Add' : 'Update'}}"/>
+        </form>
+    </div>
+</body>
+</html>
